@@ -33,4 +33,5 @@ dependencies {
     compile 'cn.pedant.sweetalert:library:1.2'
 
     compile 'javax.annotation:javax.annotation-api:1.2'
+    testCompile 'org.testng:testng:6.9.6'
 }
