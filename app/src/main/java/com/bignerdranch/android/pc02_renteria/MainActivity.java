@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFinish(){
-                    //set the new Content of your activity
+
 
                     Intent intentlogin=new Intent(MainActivity.this, LoginAcitvity.class);
                     startActivity(intentlogin);

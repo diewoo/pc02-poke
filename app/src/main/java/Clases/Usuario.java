@@ -17,41 +17,31 @@ public class Usuario {
     private String password;
 
 
+    public Usuario() {
+    }
 
-    /**
-     *
-     * @return
-     * The username
-     */
+
+    public Usuario(String user, String password) {
+        this.user = user;
+        this.password = password;
+    }
+
+
     public String getUsername() {
         return user;
     }
 
-    /**
-     *
-     * @param user
-     * The username
-     */
     public void setUsername(String user) {
         this.user = user;
     }
 
-    /**
-     *
-     * @return
-     * The password
-     */
+
     public String getPassword() {
         return password;
     }
 
-    /**
-     *
-     * @param password
-     * The password
-     */
+
     public void setPassword(String password) {
         this.password = password;
     }
-
 }

@@ -1,9 +1,6 @@
 package com.bignerdranch.android.pc02_renteria;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,190 +8,128 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.squareup.picasso.Picasso;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.List;
+
+import Clases.Pokemoneslistar;
+import Interfaces.IPokemon;
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class mispokemones_activity extends AppCompatActivity {
-    int posicioh=1;
-    int code;
-    String modo;
+    TextView mnivel;
+    TextView tviTipo;
+    TextView mDescripcion;
+    ImageView img;
+    Button butSiguiente;
+    Button butAtras;
+    int id=0;
+    int i=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mispokemones_activity);
-        final Button bMenu = (Button) findViewById(R.id.butMenu);
+        mnivel = (TextView) findViewById(R.id.tviNivel);
+        tviTipo = (TextView) findViewById(R.id.tviTipo);
+        mDescripcion = (TextView) findViewById(R.id.tviDescripcion);
+        img = (ImageView) findViewById(R.id.imageView);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            id = extras.getInt("id");
+        }
 
-        final Button posAdelante = (Button) findViewById(R.id.butSiguiente);
-        final Button posAtras = (Button) findViewById(R.id.butAtras);
+        butSiguiente= (Button) findViewById(R.id.butSiguiente);
+        butAtras = (Button) findViewById(R.id.butAtras);
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://ul-pokemon.herokuapp.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        new Thread() {
+        IPokemon usuariosService = retrofit.create(IPokemon.class);
+
+        usuariosService.getPokemones(id).enqueue(new Callback<List<Pokemoneslistar>>() {
             @Override
-            public void run() {
-                try {
-                    seteardatos();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            public void onResponse(Call<List<Pokemoneslistar>> call, Response<List<Pokemoneslistar>> response) {
+                final List<Pokemoneslistar> pokemones = response.body();
+                int status = response.code();
 
-                bMenu.setOnClickListener(new View.OnClickListener() {
+
+                traerInformacion(pokemones);
+
+                butSiguiente.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(mispokemones_activity.this, dashboard_activity.class);
-                        startActivity(intent);
-                    }
-                });
-                posAdelante.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        modo = "adelante";
-                        posicioh++;
-                        try {
-                            seteardatos();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                    public void onClick(View v) {
+                        if(i==pokemones.size()-1){
+                            new SweetAlertDialog(mispokemones_activity.this)
+                                    .setContentText("No hay pokemones!")
+                                    .show();
+                        }else{
+
+                            i++;
+                            traerInformacion(pokemones);
                         }
+
                     }
                 });
-                posAtras.setOnClickListener(new View.OnClickListener() {
+
+
+                butAtras.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        modo = "atras";
-                        posicioh--;
-                        try {
-                            seteardatos();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                    public void onClick(View v) {
+                        if(i==0){
+                            new SweetAlertDialog(mispokemones_activity.this)
+                                    .setContentText("presionar, para avanzar!")
+                                    .show();
+                        }else{
+
+                            i--;
+                            traerInformacion(pokemones);
                         }
+
                     }
                 });
+
+
             }
-        }.start();
+
+            @Override
+            public void onFailure(Call<List<Pokemoneslistar>> call, Throwable t) {
+                Log.e("MisPokemonesActivity",t.getMessage());
+            }
+        });
+
+
+
+
+
+
+        Button butMenu = (Button) findViewById(R.id.butMenu);
+        butMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mispokemones_activity.this,dashboard_activity.class);
+                startActivity(intent);
+            }
+        });
+
 
     }
 
-        private String obtenerContenido(String
-        ruta) throws IOException {
-            InputStream is = null;
-            try {
-                URL url = new URL(ruta);
-                HttpURLConnection conn =
-                        (HttpURLConnection) url.openConnection();
-                conn.setConnectTimeout(5000);
-                conn.setReadTimeout(20000);
-                conn.setRequestMethod("GET");
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-
-                conn.connect();
-
-
-                code = conn.getResponseCode();
-
-                if (code == 200){
-                    is = conn.getInputStream();
-
-                    return convertInputStreamToString(is);
-                }else{
-                    return "Error:" + conn.getResponseMessage();
-                }
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-                return e.getMessage();
-            } finally {
-                if (is!= null){
-                    is.close();
-                }
-            }
-        }
-
-        private String convertInputStreamToString(InputStream is) throws IOException {
-            BufferedReader r =
-                    new BufferedReader(new InputStreamReader(is));
-            StringBuilder total = new StringBuilder();
-            String line;
-            while ((line = r.readLine()) != null) {
-                total.append(line).append('\n');
-            }
-            return total.toString();
-        }
-
-        private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-            ImageView bmImage;
-
-            public DownloadImageTask(ImageView bmImage) {
-                this.bmImage = bmImage;
-            }
-
-            protected Bitmap doInBackground(String... urls) {
-                String urldisplay = urls[0];
-                Bitmap mIcon11 = null;
-                try {
-                    InputStream in = new java.net.URL(urldisplay).openStream();
-                    mIcon11 = BitmapFactory.decodeStream(in);
-                } catch (Exception e) {
-                    Log.e("Error", e.getMessage());
-                    e.printStackTrace();
-                }
-                return mIcon11;
-            }
-
-            protected void onPostExecute(Bitmap result) {
-                bmImage.setImageBitmap(result);
-            }
-        }
-
-        public void seteardatos() throws IOException, JSONException {
-
-            TextView txtpoke = (TextView) findViewById(R.id.tviPokemon);
-            TextView lvlpoke = (TextView) findViewById(R.id.tviNivel);
-            TextView tipopoke = (TextView) findViewById(R.id.tviTipo);
-
-
-            String resp = obtenerContenido(
-                    "https://ul-pokemon.herokuapp.com/usuarios/"+posicioh+"/pokemones" );
-            JSONObject root = new JSONObject(resp);
-            String url = root.getString("url");
-            String nombre = root.getString("nombre");
-            String tipo = root.getString("tipo");
-            int nivel = root.getInt("nivel");
-            String descpoke = root.getString("descripcion");
-
-            if (code==200) {
-                new DownloadImageTask((ImageView) findViewById(R.id.imageView)).execute(url);
-                txtpoke.setText(nombre);
-                lvlpoke.setText(nivel);
-                tipopoke.setText(tipo);
-
-            }else{
-                if (modo.equals("adelante")){
-                    posicioh--;
-                }else{
-                    posicioh++;
-                }
-                posicioh++;
-
-
-
-
-            }
-        }
-
+    public void traerInformacion(List<Pokemoneslistar> pokemones){
+        Picasso.with(this).load(pokemones.get(i).getUrl()).into(img);
+        mnivel.setText( pokemones.get(i).getNivel().toString());
+        tviTipo.setText(pokemones.get(i).getTipo());
+        mDescripcion.setText(pokemones.get(i).getDescripcion());
     }
+
+
+}
 

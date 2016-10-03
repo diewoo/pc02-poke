@@ -7,6 +7,7 @@
               android:paddingLeft="16dp"
               android:paddingRight="16dp"
               android:paddingTop="16dp"
+              android:background="#c3c3c3"
     >
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,7 +20,10 @@
             android:layout_height="wrap_content"
             android:hint="Ingreso usuario"
             android:layout_marginBottom="5sp"
-            android:layout_marginTop="5sp"/>
+            android:layout_marginTop="5sp"
+            android:textAlignment="center"
+            android:maxLines="1"
+            android:maxLength="20"/>
         <EditText
             android:id="@+id/eteRegPassword"
             android:layout_width="match_parent"
@@ -28,6 +32,9 @@
             android:hint="Ingrese password"
             android:layout_marginBottom="5sp"
             android:layout_marginTop="5sp"
+            android:textAlignment="center"
+            android:maxLines="1"
+            android:maxLength="20"
             />
         <EditText
             android:id="@+id/eteRegPassword2"
@@ -36,7 +43,10 @@
             android:layout_below="@id/eteRegPassword"
             android:hint="Reingrese password"
             android:layout_marginBottom="5sp"
-            android:layout_marginTop="5sp"/>
+            android:layout_marginTop="5sp"
+            android:textAlignment="center"
+            android:maxLines="1"
+            android:maxLength="20"/>
         <Button
             android:id="@+id/butGuardar"
             android:layout_width="match_parent"
@@ -44,7 +54,9 @@
             android:layout_below="@id/eteRegPassword2"
             android:layout_marginBottom="5sp"
             android:layout_marginTop="5sp"
-            android:text="Guardar"/>
+            android:text="Guardar"
+            android:background="@color/cardview_dark_background"
+            android:textColor="#ffff"/>
     </RelativeLayout>
 
 </LinearLayout>

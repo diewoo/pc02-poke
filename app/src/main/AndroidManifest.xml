@@ -20,11 +20,11 @@
             android:label="@string/title_activity_login_acitvity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".dashboard_activity">
+        <activity android:name=".dashboard_activity" android:configChanges="screenSize|orientation">
+    </activity>
+        <activity android:name=".registro_activity" android:configChanges="screenSize|orientation" >
         </activity>
-        <activity android:name=".registro_activity">
-        </activity>
-        <activity android:name=".mispokemones_activity">
+        <activity android:name=".mispokemones_activity" android:configChanges="screenSize|orientation" >
         </activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
