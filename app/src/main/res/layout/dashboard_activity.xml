@@ -17,6 +17,7 @@
         android:layout_height="0dp">
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_weight="1.5"
         android:orientation="vertical"
@@ -28,14 +29,15 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:text="Mis Pokemones"/>
+            android:text="Mi Pokedex"/>
         <Button
             android:id="@+id/butPokemonesDisponibles"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:text="Pokemones disponibles"/>
+            android:text="Atrapar"/>
     </LinearLayout>
+
     <LinearLayout
         android:layout_weight="1"
         android:orientation="vertical"

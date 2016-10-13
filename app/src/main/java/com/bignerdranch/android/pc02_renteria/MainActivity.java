@@ -1,5 +1,7 @@
 package com.bignerdranch.android.pc02_renteria;
-
+/**
+ * Created by Diego Renteria on 02/10/2016.
+ */
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;

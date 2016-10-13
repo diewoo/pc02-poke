@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">pc02-renteria</string>
+    <string name="app_name">parcial-renteria</string>
     <string name="title_activity_login_acitvity">LoginAcitvity</string>
     <string name="title_activity_registro_activity">registro_activity</string>
 </resources>

@@ -7,22 +7,17 @@ import com.google.gson.annotations.SerializedName;
  * Created by Diego Renteria on 09/10/2016.
  */
 
-public class Respuesta {
+public class ResponsePokemones {
     @SerializedName("status")
     @Expose
     private Status status;
-    @SerializedName("usuario")
+    @SerializedName("pokemones")
     @Expose
-    private Usuario usuario;
+    private Pokemon pokemones;
 
-
-
-    public Respuesta() {
-    }
-
-    public Respuesta(Status status, Usuario user) {
+    public ResponsePokemones(Status status, Pokemon pokemones) {
         this.status = status;
-        this.usuario = user;
+        this.pokemones = pokemones;
     }
 
     public Status getStatus() {
@@ -33,11 +28,11 @@ public class Respuesta {
         this.status = status;
     }
 
-    public Usuario getUser() {
-        return usuario;
+    public Pokemon getPokemones() {
+        return pokemones;
     }
 
-    public void setUser(Usuario usuario) {
-        this.usuario = usuario;
+    public void setPokemones(Pokemon pokemones) {
+        this.pokemones = pokemones;
     }
 }

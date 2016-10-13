@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.bignerdranch.android.pc02_renteria">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,16 +19,27 @@
         </activity>
         <activity
             android:name=".LoginAcitvity"
-            android:label="@string/title_activity_login_acitvity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="Pokemon GO"
+            android:configChanges="screenSize|orientation">
         </activity>
-        <activity android:name=".dashboard_activity" android:configChanges="screenSize|orientation">
-    </activity>
-        <activity android:name=".registro_activity" android:configChanges="screenSize|orientation" >
+        <activity
+            android:name=".dashboard_activity"
+            android:configChanges="screenSize|orientation">
         </activity>
-        <activity android:name=".mispokemones_activity" android:configChanges="screenSize|orientation" >
+        <activity
+            android:name=".registro_activity"
+            android:configChanges="screenSize|orientation">
+        </activity>
+        <activity
+            android:name=".mispokemones_activity"
+            android:configChanges="screenSize|orientation">
+        </activity>
+        <activity android:name=".atrapar_activity"
+                  android:configChanges="screenSize|orientation">
+        </activity>
+        <activity android:name=".Capture_Activity"
+                  android:configChanges="screenSize|orientation">
         </activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET"/>
 
 </manifest>

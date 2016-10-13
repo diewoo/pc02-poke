@@ -3,36 +3,49 @@ package Clases;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
- * Created by Diego Renteria on 01/10/2016.
+ * Created by Diego Renteria on 09/10/2016.
  */
 
 public class Usuario {
-
-    @SerializedName("user")
+    @SerializedName("username")
     @Expose
-    private String user;
+    private String username;
     @SerializedName("password")
     @Expose
     private String password;
+    @SerializedName("pokemones")
+    @Expose
+    private List<Object> pokemones;
+
 
 
     public Usuario() {
     }
 
 
-    public Usuario(String user, String password) {
-        this.user = user;
+    public Usuario(String user, String password, List<Object> pokemones) {
+        this.username = user;
         this.password = password;
+        this.pokemones= pokemones;
     }
 
+    public List<Object> getPokemones() {
+        return pokemones;
+    }
+
+    public void setPokemones(List<Object> pokemones) {
+        this.pokemones = pokemones;
+    }
 
     public String getUsername() {
-        return user;
+        return username;
     }
 
     public void setUsername(String user) {
-        this.user = user;
+        this.username = user;
     }
 
 
@@ -44,4 +57,5 @@ public class Usuario {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

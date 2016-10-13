@@ -1,5 +1,7 @@
 package com.bignerdranch.android.pc02_renteria;
-
+/**
+ * Created by Diego Renteria on 02/10/2016.
+ */
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +13,6 @@ import android.widget.Toast;
 
 import Clases.Respuesta;
 import Clases.Usuario;
-import Clases.Usuarios;
 import Interfaces.IPokemon;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
@@ -46,6 +47,7 @@ public class registro_activity extends AppCompatActivity {
 
 
                         new SweetAlertDialog(registro_activity.this)
+                                .setTitleText("Alerta!")
                                 .setContentText("Campos vacios, revisar!")
                                 .show();
 
@@ -54,6 +56,7 @@ public class registro_activity extends AppCompatActivity {
                         if(eteRegUsuario.getText().toString().equalsIgnoreCase("")){
 
                             new SweetAlertDialog(registro_activity.this)
+                                    .setTitleText("Alerta!")
                                     .setContentText("Ya existe el usuario, revisar!")
                                     .show();
                         }else{
@@ -61,18 +64,18 @@ public class registro_activity extends AppCompatActivity {
                             if(eteRegPassword.getText().toString().equalsIgnoreCase(eteRegPassword3.getText().toString())){
 
                                 Retrofit retrofit = new Retrofit.Builder()
-                                        .baseUrl("https://ul-pokemon.herokuapp.com")
+                                        .baseUrl("https://ulima-parcial.herokuapp.com/")
                                         .addConverterFactory(GsonConverterFactory.create())
                                         .build();
 
                                 IPokemon usuariosService = retrofit.create(IPokemon.class);
-                                Usuarios usuarios = new Usuarios();
-                                Usuario usu= new Usuario();
-                                usu.setUsername(eteRegUsuario.getText().toString());
-                                usu.setPassword(eteRegPassword.getText().toString());
-                                usuarios.setUsuario(usu);
+                                Usuario usuario = new Usuario();
+                               // Usuario usu= new Usuario();
+                                usuario.setUsername(eteRegUsuario.getText().toString());
+                                usuario.setPassword(eteRegPassword.getText().toString());
 
-                                Call<Respuesta> usuarioCall = usuariosService.createUser(usuarios);
+
+                                Call<Respuesta> usuarioCall = usuariosService.registrar(usuario);
 
                                 usuarioCall.enqueue(new Callback<Respuesta>() {
                                     @Override
@@ -80,27 +83,29 @@ public class registro_activity extends AppCompatActivity {
                                         Respuesta respuesta = response.body();
                                         int status = response.code();
 
-                                        if(respuesta.getStatus().getMsg().equalsIgnoreCase("")){
-
+                                        if(respuesta.getStatus().getCod()==1){
                                             new SweetAlertDialog(registro_activity.this)
-                                                    .setContentText("datos correctos!")
+                                                    .setTitleText("Alerta!")
+                                                    .setContentText(respuesta.getStatus().getMsg().toString())
                                                     .show();
                                             Intent intent= new Intent(registro_activity.this,MainActivity.class);
                                             startActivity(intent);
                                         }else{
                                             new SweetAlertDialog(registro_activity.this)
-                                                    .setContentText("error!")
+                                                    .setTitleText("Alerta!")
+                                                    .setContentText(respuesta.getStatus().getMsg().toString())
                                                     .show();
-
                                         }
-
-
                                     }
-
                                     @Override
                                     public void onFailure(Call<Respuesta> call, Throwable t) {
-
+                                        Log.e("MainActivity", t.getMessage());
                                     }
+
+
+
+
+
                                 });
 
 
